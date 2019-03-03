@@ -1,0 +1,33 @@
+# abook addressbook file
+
+[format]
+program=abook
+version=0.6.1
+
+
+[0]
+name=No name
+first_name=No
+last_name=name
+
+[1]
+name=Super Doo Mcfloo
+first_name=Super Doo
+last_name=Mcfloo
+birthday=1991-11-27
+mobile=12 34 56 78
+nick=DOFLOO
+
+[2]
+name=JACK MCBACK
+email=jack@mcback.dk
+first_name=JACK
+last_name=MCBACK
+birthday=1995-11-23
+mobile=92 12 12 24
+address=Address 28
+zip=94812
+city=Atlanta
+state=Georgia
+country=France
+nick=SuperFoo
