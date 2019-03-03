@@ -22,31 +22,37 @@ def isInt(s):
     except ValueError:
         return False
 
+def parse(line, contact):
+    """Parses a line of an abook file.
+    The bool returned determines if the contact is done or not.
+
+    :line: line of abookfile
+    :contact: Contact being built
+    :returns: (bool, contact)
+    """
+    done = False
+    # Line is empty
+    if(line == ''):
+        done = True
+        return (True, contact)
+    # If the line is header field, i.e. [a-z1-9+]
+    elif(line[0] == '[' and line[-1] == ']' and isInt(line[1:len(line)-1])):
+        contact['id'] = parseContactID(line)
+    # If the line is a field, and we're building a contact.
+    elif('=' in line and 'id' in contact):
+        name, value = parseField(line)
+        contact[name] = value
+    return (done, contact)
+
 def parseAbook(abookfile):
     contacts = []
     with open(abookfile, 'r') as abook:
         contact = {}
         for line in abook:
-            line = line.rstrip()
-            if(line == ''):
-                if(contact != {}):
-                    contacts.append(contact)
-                    contact = {}
-                continue
-            # If the line is header field, i.e. [a-z1-9+]
-            if(line[0] == '[' and line[-1] == ']'):
-                headerVal = line[1:len(line)-1]
-                # If the header field contains an id (int)
-                if isInt(headerVal):
-                    contact['id'] = parseContactID(line)
-                continue
-            # If the line is a field, and we're building a contact.
-            if('=' in line and 'id' in contact):
-                name, value = parseField(line)
-                contact[name] = value
-                continue
-    # Dump last contact.
-    if(contact != {}): contacts.append(contact)
+            done, contact = parse(line.rstrip(),contact)
+            if done and contact != {}:
+                contacts.append(contact)
+                contact = {}
     return contacts
 
 def main(abookfile):
