@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+from sys import argv
+from AbookParser import parseAbook
+
+def numToMonth(num):
+    return { 1 : 'Jan'
+           , 2 : 'Feb'
+           , 3 : 'Mar'
+           , 4 : 'Apr'
+           , 5 : 'May'
+           , 6 : 'Jun'
+           , 7 : 'Jul'
+           , 8 : 'Aug'
+           , 9 : 'Sep'
+           , 10 : 'Oct'
+           , 11 : 'Nov'
+           , 12 : 'Dec'}[num]
+
+# REM day mon +14 %"first_name [_yr_num(year)] birthday%" is [t()]
+def REMstring(contact):
+    if('birthday' not in contact):
+        return None
+    n = contact['first_name']
+    d, m, y  = contact['birthday'].split('-')
+    mo = numToMonth(int(m))
+    rem = "REM "+d+" "+m+" +14 %\""+n+" [_yr_num("+y+")] birthday%\" is [t()]"
+    return rem
+
+def printx(st): 
+    if st != None: print(st)
+
+def main(abookfile):
+    rems = [REMstring(contact) for contact in parseAbook(abookfile)]
+    [printx(rem) for rem in rems]
+
+
+if __name__ == "__main__":
+    main(argv[1])
